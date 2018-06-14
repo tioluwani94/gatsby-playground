@@ -12,7 +12,7 @@ const User = props => (
   </div>
 );
 
-export default () => (
+export default ({ data }) => (
   <Container>
     <h1>About CSS Modules</h1>
     <p>CSS Modules are cool</p>
@@ -27,5 +27,43 @@ export default () => (
       avatar="https://s3.amazonaws.com/uifaces/faces/twitter/vladarbatov/128.jpg"
       excerpt="I'm Bob smith, a vertically aligned type of guy. Lorem ipsum dolor sit amet, consectetur adipisicing elit."
     />
+    <h1>My Site's Files</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>relativePath</th>
+          <th>prettySize</th>
+          <th>extension</th>
+          <th>birthTime</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.allFile.edges.map(({ node }, index) => (
+          <tr key={index}>
+            <td>{node.relativePath}</td>
+            <td>{node.prettySize}</td>
+            <td>{node.extension}</td>
+            <td>{node.birthTime}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   </Container>
 );
+
+export const query = graphql`
+         query FileSystemQuery {
+           allFile {
+             edges {
+               node {
+                 absolutePath
+                 relativePath
+                 extension
+                 size
+                 prettySize
+                 birthTime(fromNow: true)
+               }
+             }
+           }
+         }
+       `;
